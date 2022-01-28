@@ -1,19 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import classNames from 'classnames';
-import { Route, Switch, useLocation, Redirect } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
+
 import LoginScreen from './pages/LoginScreen/LoginScreen';
 
 import RegisterScreen from './pages/RegisterScreen/RegisterScreen';
 //import { Profile } from './pages/ProfileScreen/ProfileScreen';
-import PrimeReact from 'primereact/api';
-import { Tooltip } from 'primereact/tooltip';
-import axios from "axios";
+
 import HomeScreen from './Home'
 import Loader from "./components/Loader"
 import { TabView, TabPanel } from 'primereact/tabview';
