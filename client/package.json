@@ -1,0 +1,57 @@
+{
+  "name": "gest-bouhet",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aws-amplify/ui-react": "^2.1.6",
+    "@fullcalendar/core": "^5.7.2",
+    "@fullcalendar/daygrid": "^5.7.2",
+    "@fullcalendar/interaction": "^5.7.2",
+    "@fullcalendar/react": "^5.7.0",
+    "@fullcalendar/timegrid": "^5.7.2",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "aws-amplify": "^4.3.12",
+    "axios": "^0.24.0",
+    "chart.js": "3.3.2",
+    "classnames": "^2.2.6",
+    "primereact": "7.1.0",
+    "primeflex": "3.1.0",
+    "primeicons": "^5.0.0",
+    "prismjs": "1.9.0",
+    "react": "^17.0.2",
+    "react-app-polyfill": "^1.0.6",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^5.0.0",
+    "react-transition-group": "^4.4.2",
+    "sass": "^1.32.8",
+    "web-vitals": "^2.1.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "pull": "amplify pull --appId dd5bz7zt1xiqq --envName dev"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

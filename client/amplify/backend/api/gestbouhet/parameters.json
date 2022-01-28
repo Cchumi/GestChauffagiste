@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "gestbouhet",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-01-11T15:41:20.059Z",
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authBouhet",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

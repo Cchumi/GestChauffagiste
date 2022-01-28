@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "gestbouhet",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/tmp/amplify-e93c45f5-2f13-49d8-8e1e-94ffc88920d0/amplify/backend/api/gestbouhet/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "keyDescription": "api key description",
+      "expirationTime": 30
+    },
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "AUTOMERGE"
+      }
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "AWS_IAM"
+      },
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authBouhet"
+      }
+    ]
+  }
+}

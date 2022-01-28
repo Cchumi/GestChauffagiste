@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3bouhetstoragedd5bz7zt1xiqq",
+  "bucketName": "bouhet-storage-dd5bz7zt1xiqq",
+  "policyUUID": "50f6ea01",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
