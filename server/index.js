@@ -4,6 +4,7 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const passport = require("passport")
 const session = require('express-session');
+const path = require("path");
 if (process.env.NODE_ENV !== "production") {
     // Load environment variables from .env file in non prod environments
     require("dotenv").config()
@@ -24,12 +25,15 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 //app.use(express.static("public"))
 if (process.env.NODE_ENV === "production") {
     console.log('we are on production!')
-    app.use(express.static('./client/build'));
-    app.get('*', (req, res) => {
-        console.log('redirecting to react app build')
-        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+    // Step 1:
+    app.use(express.static(path.resolve(__dirname, "./client/build")));
+    // Step 2:
+    app.get("*", function (request, response) {
+        response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
     });
 }
+
+
 //Add the client URL to the CORS policy
 
 const whitelist = process.env.WHITELISTED_DOMAINS

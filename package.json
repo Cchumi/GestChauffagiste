@@ -3,29 +3,33 @@
     "version": "1.0.0",
     "description": "Gestion Chauffagiste",
     "engines": {
-      "node": "16.x"
+        "node": "16.x"
     },
     "scripts": {
-      "start": "node server",
-      "build": "cd client/ && npm install && npm run build"
+        "build": "cd client && npm run build",
+        "install-client": "cd client && npm install",
+        "heroku-postbuild": "npm run install-client && npm run build",
+        "server": "cd server @@ nodemon index.js",
+        "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
+        "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
     },
     "cacheDirectories": [
-      "node_modules",
-      "client/node_modules"
+        "node_modules",
+        "client/node_modules"
     ],
     "dependencies": {
-      "express": "^4.16.4"
+        "express": "^4.16.4",
+        "nodemon": "^2.0.15"
     },
     "repository": {
-      "type": "git",
-      "url": "https://github.com/Cchumi/GestChauffagiste.git"
+        "type": "git",
+        "url": "https://github.com/Cchumi/GestChauffagiste.git"
     },
     "keywords": [
-      "node",
-      "heroku",
-      "create-react-app",
-      "react"
+        "node",
+        "heroku",
+        "create-react-app",
+        "react"
     ],
-    "license": "MIT",
-    "devDependencies": {}
-  }
+    "license": "MIT"
+}
