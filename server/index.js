@@ -5,8 +5,8 @@ const cookieParser = require("cookie-parser")
 const passport = require("passport")
 const session = require('express-session');
 if (process.env.NODE_ENV !== "production") {
-  // Load environment variables from .env file in non prod environments
-  require("dotenv").config()
+    // Load environment variables from .env file in non prod environments
+    require("dotenv").config()
 }
 require("./utils/connectdb")
 
@@ -20,23 +20,32 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(cookieParser(process.env.COOKIE_SECRET))
-
+// use the express-static middleware
+//app.use(express.static("public"))
+if (process.env.NODE_ENV === "production") {
+    console.log('we are on production!')
+    app.use(express.static('./client/build'));
+    app.get('*', (req, res) => {
+        console.log('redirecting to react app build')
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+    });
+}
 //Add the client URL to the CORS policy
 
 const whitelist = process.env.WHITELISTED_DOMAINS
-  ? process.env.WHITELISTED_DOMAINS.split(",")
-  : []
+    ? process.env.WHITELISTED_DOMAINS.split(",")
+    : []
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
+    origin: function (origin, callback) {
+        if (!origin || whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error("Not allowed by CORS"))
+        }
+    },
 
-  credentials: true,
+    credentials: true,
 }
 
 app.use(cors(corsOptions))
@@ -55,7 +64,7 @@ app.use("/clients", clientRouter)
     });
 });*/
 
-app.post("/createUser", async (req, res) => {
+/*app.post("/createUser", async (req, res) => {
     const user = req.body;
     const newUser = new UserModel(user);
     await newUser.save();
@@ -64,12 +73,12 @@ app.post("/createUser", async (req, res) => {
 });
 app.get("/", function (req, res) {
   res.send({ status: "success" })
-})
+})*/
 
 //Start the server in port 8081
 
 const server = app.listen(process.env.PORT || 8081, function () {
-  const port = server.address().port
+    const port = server.address().port
 
-  console.log("App started at port:", port)
+    console.log("App started at port:", port)
 })
