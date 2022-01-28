@@ -26,8 +26,8 @@ const ClientsDetailsScreen = (props) => {
   console.log(clientId)
 
   useEffect(() => {
-
-    fetch(process.env.REACT_APP_API_ENDPOINT + "clients/getclientbyid", {
+//process.env.REACT_APP_API_ENDPOINT + 
+    fetch("/clients/getclientbyid", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

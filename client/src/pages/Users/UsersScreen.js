@@ -24,7 +24,8 @@ const UsersScreen = () => {
   console.log(userContext)
 
   const verifyUsers = useCallback(() => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "users/getall", {
+    //process.env.REACT_APP_API_ENDPOINT + 
+    fetch("users/getall", {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

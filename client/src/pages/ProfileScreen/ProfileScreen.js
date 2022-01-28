@@ -19,7 +19,8 @@ export const ProfileScreen = () => {
   const [userContext, setUserContext] = useContext(UserContext);
   const history = useHistory();
   const Logout = () => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "users/logout", {
+    //process.env.REACT_APP_API_ENDPOINT + 
+    fetch( "/users/logout", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +36,8 @@ export const ProfileScreen = () => {
   }
 
   const getMeInfo = () => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "users/me", {
+    //process.env.REACT_APP_API_ENDPOINT + 
+    fetch( "/users/me", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

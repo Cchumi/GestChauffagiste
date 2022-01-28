@@ -313,7 +313,8 @@ const HomeScreen = () => {
         'layout-theme-light': layoutColorMode === 'light'
     });
     const fetchUserDetails = useCallback(() => {
-        fetch(process.env.REACT_APP_API_ENDPOINT + "users/me", {
+        //process.env.REACT_APP_API_ENDPOINT + 
+        fetch("users/me", {
             method: "GET",
             credentials: "include",
             // Pass authentication token as bearer token in header
@@ -349,7 +350,8 @@ const HomeScreen = () => {
         }
     }, [userContext.details, fetchUserDetails])
     const logoutHandler = () => {
-        fetch(process.env.REACT_APP_API_ENDPOINT + "users/logout", {
+        //process.env.REACT_APP_API_ENDPOINT + 
+        fetch("users/logout", {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",

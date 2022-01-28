@@ -24,7 +24,8 @@ const ClientsScreen = () => {
   console.log(userContext)
 
   const verifyClients = useCallback(() => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "clients/getall", {
+    //    fetch(process.env.REACT_APP_API_ENDPOINT + "clients/getall", {
+    fetch("/clients/getall", {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -47,7 +48,8 @@ const ClientsScreen = () => {
 
   const addClient = (newClient) => {
     console.log("addClient");
-    fetch(process.env.REACT_APP_API_ENDPOINT + "clients/add", {
+   // fetch(process.env.REACT_APP_API_ENDPOINT + "clients/add", {
+    fetch("/clients/add", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
