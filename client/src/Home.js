@@ -314,7 +314,7 @@ const HomeScreen = () => {
     });
     const fetchUserDetails = useCallback(() => {
         //process.env.REACT_APP_API_ENDPOINT + 
-        fetch("users/me", {
+        fetch("/users/me", {
             method: "GET",
             credentials: "include",
             // Pass authentication token as bearer token in header
@@ -351,7 +351,7 @@ const HomeScreen = () => {
     }, [userContext.details, fetchUserDetails])
     const logoutHandler = () => {
         //process.env.REACT_APP_API_ENDPOINT + 
-        fetch("users/logout", {
+        fetch("/users/logout", {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
