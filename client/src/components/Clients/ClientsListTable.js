@@ -403,6 +403,9 @@ export const ClientsListTable = ({ clientsData, addClient }) => {
                         filterDisplay="row"
                         loading={loadingClients}
                         responsiveLayout="stack"
+
+breakpoint="760px"
+
                         globalFilterFields={['username', 'firstName', 'lastName', 'status']}
                         header={headerClients}
                         emptyMessage="No customers found."
