@@ -23,15 +23,6 @@ app.use(bodyParser.json())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 // use the express-static middleware
 //app.use(express.static("public"))
-if (process.env.NODE_ENV === "production") {
-    console.log('we are on production!')
-    // Step 1:
-    app.use(express.static(path.resolve(__dirname, "../client/build")));
-    // Step 2:
-    app.get("/*", function (request, response) {
-        response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-    });
-}
 
 
 //Add the client URL to the CORS policy
@@ -58,6 +49,17 @@ app.use(passport.initialize())
 
 app.use("/users", userRouter)
 app.use("/clients", clientRouter)
+
+if (process.env.NODE_ENV === "production") {
+    console.log('we are on production!')
+    // Step 1:
+    app.use(express.static(path.resolve(__dirname, "../client/build")));
+    // Step 2:
+    app.get("/*", function (request, response) {
+        response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+    });
+}
+
 /*app.get("/getUsers", (req, res) => {
     User.find({}, (err, result) => {
         if (err) {
