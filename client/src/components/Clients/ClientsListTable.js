@@ -419,9 +419,9 @@ breakpoint="760px"
                         dataKey="_id"
                     >
                         <Column field="_id" hidden />
-                        <Column field="firstName" header="Prénom" filter filterPlaceholder="Recherche par prénom" sortable style={{ minWidth: '12rem' }} />
-                        <Column field="lastName" header="Nom" filter filterPlaceholder="Recherche par nom" sortable style={{ minWidth: '12rem' }} />
-                        <Column field="societe" header="Société" filter filterPlaceholder="Recherche par société" sortable style={{ minWidth: '12rem' }} />
+                        <Column field="firstName" header="Prénom" filter filterPlaceholder="Recherche par prénom" sortable /*style={{ minWidth: '12rem' }}*/ />
+                        <Column field="lastName" header="Nom" filter filterPlaceholder="Recherche par nom" sortable /*style={{ minWidth: '12rem' }}*/ />
+                        <Column field="societe" header="Société" filter filterPlaceholder="Recherche par société" sortable /*style={{ minWidth: '12rem' }}*/ />
                         {/* <Column header="Country" filterField="country.name" sortable style={{ justifyContent: 'space-between' }} body={countryBodyTemplate} filter filterPlaceholder="Recherche par pays" />
                     <Column header="Agent" filterField="representative" sortable showFilterMenu={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body={representativeBodyTemplate}
                         filter filterElement={representativeRowFilterTemplate} />
