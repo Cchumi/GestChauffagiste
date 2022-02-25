@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import Amplify from 'aws-amplify';
-import awsconfig from './aws-exports';
 
-import { Authenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
 
 import LoginScreen from './pages/LoginScreen/LoginScreen';
 
@@ -58,7 +54,7 @@ const App = () => {
         verifyUser()
     }, [verifyUser])
 
-    const Login = () => {
+   /* const Login = () => {
         return (
             <div className="grids h-screen flex md:w-full w-screen align-items-center lg:align-items-center justify-content-center surface-ground">
                 <div className='h-screen w-screen absolute z-0 bg-cover bg-no-repeat' style={{ backgroundImage: 'url("./images/pages/login.png")', backgroundSize: '110%', filter: 'blur(20px)' }} />
@@ -77,7 +73,7 @@ const App = () => {
                 <div className="col-10 lg:col-2 z-1 absolute"><RegisterScreen /></div>
             </div>
         )
-    }
+    }*/
     console.log(userContext)
     return userContext.token === null ? (
         <div className="grids auth-screens h-screen flex md:w-full w-screen align-items-center lg:align-items-center justify-content-center surface-ground">

@@ -1,14 +1,14 @@
 import "./UsersScreen.css";
 import React, { useEffect, useState, useCallback, useContext } from 'react';
-import Axios from "axios";
+//import Axios from "axios";
 //Route Imports
-import { Link, browserHistory, useHistory } from "react-router-dom";
+//import { Link, browserHistory, useHistory } from "react-router-dom";
 
 //Prime Imports
-import { Card } from "primereact/card";
-import { InputText } from "primereact/inputtext";
-import { Password } from 'primereact/password';
-import { Button } from "primereact/button";
+//import { Card } from "primereact/card";
+//import { InputText } from "primereact/inputtext";
+//import { Password } from 'primereact/password';
+//import { Button } from "primereact/button";
 import { UserContext } from "../../context/UserContext"
 import { UsersListTable } from '../../components/Users/UsersListTable'
 //import { ClientsLayout } from '../../components/Clients/ClientsLayout';
@@ -16,10 +16,10 @@ import { UsersListTable } from '../../components/Users/UsersListTable'
 const UsersScreen = () => {
   const [userContext, setUserContext] = useContext(UserContext)
   const [listOfUsers, setListOfUsers] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  //const [isSubmitting, setIsSubmitting] = useState(false)
+  //const [error, setError] = useState("")
+  //const [email, setEmail] = useState("")
+  //const [password, setPassword] = useState("")
 
   console.log(userContext)
 
