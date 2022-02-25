@@ -15,7 +15,7 @@ const User = new Schema({
         type: String,
         default: "",
     },
-    username: {
+    userName: {
         type: String,
         default: "",
     },
@@ -29,28 +29,45 @@ const User = new Schema({
     },
     password: {
         type: String,
-
     },
-  authStrategy: {
+    authStrategy: {
         type: String,
         default: "local",
-    },
-    points: {
-        type: Number,
-        default: 50,
     },
     role: {
         type: String,
         default: "user"
     },
+    online: {
+        type: Boolean,
+        default: false
+    },
     refreshToken: {
         type: [Session],
     },
-}, 
-{
-  timestamps: true
-})
+    societe: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Societe"
+    },
+    interventions: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Intervention"
+        }
+    ]
+},
+    {
+        timestamps: true
+    })
 
+   /* User.pre("save", async function (next) {
+        if (!this.isModified("password")) {
+          return next();
+        }
+        const hash = await bcrypt.hash(this.password, Number(bcryptSalt));
+        this.password = hash;
+        next();
+      });*/
 //Remove refreshToken from the response
 User.set("toJSON", {
     transform: function (doc, ret, options) {

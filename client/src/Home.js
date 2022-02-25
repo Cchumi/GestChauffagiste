@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
-
+//import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import classNames from 'classnames';
@@ -12,7 +13,7 @@ import { AppTopbar } from './AppTopbar';
 import { AppFooter } from './AppFooter';
 import { AppMenu } from './AppMenu';
 import { AppConfig } from './AppConfig';
-import { ProfileScreen } from './pages/ProfileScreen/ProfileScreen'
+
 import { Dashboard } from './components/Dashboard';
 //import { ClientsLayout } from './components/ClientsLayout';
 import { ButtonDemo } from './components/ButtonDemo';
@@ -47,6 +48,8 @@ import UsersScreen from './pages/Users/UsersScreen';
 import LoginScreen from './pages/LoginScreen/LoginScreen';
 
 import RegisterScreen from './pages/RegisterScreen/RegisterScreen';
+import { ProfileScreen } from './pages/ProfileScreen/ProfileScreen'
+import { SettingsScreen } from './pages/SettingsScreen/SettingsScreen'
 //import { Profile } from './pages/ProfileScreen/ProfileScreen';
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -62,6 +65,8 @@ import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
+import URLs from "./URLs";
+const ENDPOINT = "http://127.0.0.1:3000";
 //Amplify.configure(awsconfig);
 const HomeScreen = () => {
     const history = useHistory();
@@ -84,8 +89,37 @@ const HomeScreen = () => {
 
     let menuClick = false;
     let mobileTopbarMenuClick = false;
+    const [response, setResponse] = useState("");
 
+    useEffect(() => {
+        console.log("useeffect io")
+        const socket = io(`${URLs.socketURL}/socket`);
+        /* socket.on("updateSociete", data => {
+           console.log(data)
+           setResponse(data);
+         });*/
+        socket.on("updateSociete", (societe) => {
+            console.log(societe)
+            setUserContext(oldValues => {
+                return { ...oldValues, details: { ...oldValues.details, societe: societe } }
+            })
+            //setResponse(societe);
+        });
+        socket.on("updateUser", (user) => {
+            console.log(user)
+            /* setUserContext(oldValues => {
+                 return { ...oldValues, details: {...oldValues.details, online: societe }}
+             })*/
+            //setResponse(societe);
+        });
 
+        /*socket.on("FromAPI", data => {
+          setResponse(data);
+        });*/
+        // CLEAN UP THE EFFECT
+        // return () => socket.disconnect();
+    }, []);
+    console.log(response)
     useEffect(() => {
         if (mobileMenuActive) {
             addClass(document.body, "body-overflow-hidden");
@@ -163,12 +197,21 @@ const HomeScreen = () => {
         event.preventDefault();
     }
     const goToProfile = useCallback(() => history.push('/profile'), [history]);
-    const onMobileSubTopbarMenuClick = (event) => {
+    const goToSettings = useCallback(() => history.push('/settings'), [history]);
+    const goToEvents = useCallback(() => history.push('/events'), [history]);
+    const onMobileSubTopbarMenuClick = (name) => {
+        console.log(name)
         mobileTopbarMenuClick = true;
-        console.log('profile');
-        goToProfile();
+        if (name === "profile") {
+            console.log('profile');
+            goToProfile();
+        }
+        if (name === "settings") {
+            console.log('settings');
+            goToSettings();
+        }
         // logoutHandler();
-        event.preventDefault();
+        // event.preventDefault();
     }
 
     const onMenuItemClick = (event) => {
@@ -183,17 +226,41 @@ const HomeScreen = () => {
 
     const menu = [
         {
-            label: 'Home',
-            items: [{
-                label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
-
-            },
-            { label: 'Clients', icon: 'pi pi-fw pi-id-card', to: '/clients' },
-            { label: 'Utilisateurs', icon: 'pi pi-fw pi-user', to: '/users', role: 'admin' },
+            label: 'Accueil',
+            items: [
+                { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }
             ]
         },
         {
-            label: 'UI Components', icon: 'pi pi-fw pi-sitemap', role: 'admin',
+            label: 'Interventions',
+            items: [
+                { label: 'Liste Interventions', icon: 'pi pi-fw pi-fw pi-list', to: '/interventions' },
+            ]
+        },
+        {
+            label: 'Clients',
+            items: [
+                { label: 'Liste Clients', icon: 'pi pi-fw pi-fw pi-list', to: '/clients' },
+                { label: 'Devis Clients', icon: 'pi pi-fw pi-id-card', to: '/clients' },
+                { label: 'Factures Clients', icon: 'pi pi-fw pi-id-card', to: '/clients' },
+            ]
+        },
+        {
+            label: 'Fournisseurs',
+            items: [
+                { label: 'Liste Fournisseurs', icon: 'pi pi-fw pi-fw pi-list', to: '/clients' },
+                { label: 'Commandes Fournisseurs', icon: 'pi pi-fw pi-id-card', to: '/clients' },
+                { label: 'Factures Fournisseurs', icon: 'pi pi-fw pi-id-card', to: '/clients' },
+            ]
+        },
+        {
+            label: 'Matériels',
+            items: [
+                { label: 'Liste Matériels', icon: 'pi pi-fw pi-fw pi-list', to: '/materiels' },
+            ]
+        },
+        {
+            label: 'UI Components', icon: 'pi pi-fw pi-sitemap', role: 'super-admin',
             items: [
                 { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/formlayout' },
                 { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/input' },
@@ -214,20 +281,20 @@ const HomeScreen = () => {
             ]
         },
         {
-            label: 'UI Blocks', role: 'admin',
+            label: 'UI Blocks', role: 'super-admin',
             items: [
                 { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', to: '/blocks', badge: "NEW" },
                 { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://www.primefaces.org/primeblocks-react' }
             ]
         },
         {
-            label: 'Icons', role: 'admin',
+            label: 'Icons', role: 'super-admin',
             items: [
                 { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/icons' }
             ]
         },
         {
-            label: 'Pages', icon: 'pi pi-fw pi-clone', role: 'admin',
+            label: 'Pages', icon: 'pi pi-fw pi-clone', role: 'super-admin',
             items: [
                 { label: 'Crud', icon: 'pi pi-fw pi-user-edit', to: '/crud' },
                 { label: 'Timeline', icon: 'pi pi-fw pi-calendar', to: '/timeline' },
@@ -235,7 +302,7 @@ const HomeScreen = () => {
             ]
         },
         {
-            label: 'Menu Hierarchy', icon: 'pi pi-fw pi-search', role: 'admin',
+            label: 'Menu Hierarchy', icon: 'pi pi-fw pi-search', role: 'super-admin',
             items: [
                 {
                     label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
@@ -280,7 +347,7 @@ const HomeScreen = () => {
             ]
         },
         {
-            label: 'Get Started', role: 'admin',
+            label: 'Get Started', role: 'super-admin',
             items: [
                 { label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => { window.location = "#/documentation" } },
                 { label: 'View Source', icon: 'pi pi-fw pi-search', command: () => { window.location = "https://github.com/primefaces/sakai-react" } }
@@ -371,6 +438,24 @@ const HomeScreen = () => {
             return { ...oldValues, details: undefined }
         })
     }
+
+    const Logout = () => {
+        //process.env.REACT_APP_API_ENDPOINT + 
+        fetch("/users/logout", {
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userContext.token}`,
+            },
+        }).then(async response => {
+            setUserContext(oldValues => {
+                return { ...oldValues, details: undefined, token: null }
+            })
+            window.localStorage.setItem("logout", Date.now())
+            history.push("/");
+        })
+    }
+
     return userContext.details === null ? (
         "Error Loading User details"
     ) : !userContext.details ? (
@@ -380,7 +465,10 @@ const HomeScreen = () => {
             <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
             <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
-                mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+                mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick}
+                userContext={userContext}
+                Logout={Logout}
+            />
 
             <div className="layout-sidebar" onClick={onSidebarClick}>
                 <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
@@ -390,11 +478,14 @@ const HomeScreen = () => {
                 <div className="layout-main">
                     <Switch>
                         <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} />} />
+                        <Route path="/clients/:clientId" component={ClientsDetailsScreen} />
                         <Route path="/clients" component={ClientsScreen} />
-                        <Route path="/client/:clientId" component={ClientsDetailsScreen} />
+
                         <Route path="/users" component={UsersScreen} />
-                        
+
                         <Route path="/profile" component={ProfileScreen} />
+                        <Route path="/settings" component={SettingsScreen} />
+
                         <Route path="/formlayout" component={FormLayoutDemo} />
                         <Route path="/input" component={InputDemo} />
                         <Route path="/floatlabel" component={FloatLabelDemo} />

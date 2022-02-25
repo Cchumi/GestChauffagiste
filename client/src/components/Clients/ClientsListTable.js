@@ -27,9 +27,9 @@ import { GMap } from 'primereact/gmap';
 
 //import './css/ClientsListTable.css';
 
-export const ClientsListTable = ({ clientsData, addClient }) => {
+export const ClientsListTable = ({ clientsData, addClient, history }) => {
     //console.log(users)
-    const history = useHistory();
+    //const history = useHistory();
     let emptyClient = {
         _id: null,
         firstName: '',
@@ -99,8 +99,8 @@ export const ClientsListTable = ({ clientsData, addClient }) => {
     const getClientData = () => {
         //getuserbyid
         console.log(selectedClient)
-        history.push(`/client/${selectedClient._id}`)
-        /*return (
+        history.push(`/clients/${selectedClient._id}`)
+       /* return (
             <Redirect
                 to={`/clients/${selectedClient._id}`}
             />
@@ -167,7 +167,7 @@ export const ClientsListTable = ({ clientsData, addClient }) => {
 
     const renderHeaderClients = () => {
         return (
-            <div className="flex justify-content-between p-ai-center filter-field" >
+            <div className="flex justify-content-between p-ai-center filter-field lg:flex-row flex-column" >
                 <div>
                     <span className="p-input-icon-left">
                         <i className="pi pi-search" />

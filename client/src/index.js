@@ -3,17 +3,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 //import * as serviceWorker from './serviceWorker';
-import { HashRouter, BrowserRouter } from 'react-router-dom'
+import { HashRouter, BrowserRouter, Router } from 'react-router-dom'
+import { createBrowserHistory } from 'history';
 import ScrollToTop from './ScrollToTop';
 import { UserProvider } from "./context/UserContext"
+const history = createBrowserHistory(/*{forceRefresh:true}*/);
 ReactDOM.render(
-    <BrowserRouter /*basename="/calendar"*/>
+    <Router history={history} /*forceRefresh={true}*/ /*basename="/calendar"*/>
         <ScrollToTop>
             <UserProvider>
                 <App />
             </UserProvider>
         </ScrollToTop>
-    </BrowserRouter>,
+    </Router>,
     document.getElementById('root')
 );
 

@@ -3,7 +3,7 @@ var passport = require("passport");
 var User = require("../models/user/user");
 const { getToken, COOKIE_OPTIONS, verifyUser, getRefreshToken } = require("../authenticate")
 const jwt = require("jsonwebtoken")
-var userController = {};
+var autController = {};
 function isLoggedIn(request, response, next) {
     // passport adds this to the request object
     if (request.isAuthenticated()) {
@@ -16,7 +16,7 @@ function isLoggedIn(request, response, next) {
 
 
 // Go to registration page
-userController.signup = (req, res, next) => {
+autController.signup = (req, res, next) => {
     // Verify that first name is not empty
     console.log(req.body.username)
     if (!req.body.firstName) {
@@ -58,12 +58,13 @@ userController.signup = (req, res, next) => {
 };
 
 // Post login
-userController.login = (req, res, next) => {
+autController.login = (req, res, next) => {
     const token = getToken({ _id: req.user._id })
     const refreshToken = getRefreshToken({ _id: req.user._id })
-    User.findById(req.user._id).then(
+    User.findById(req.user._id).populate("societe").then(
         user => {
             user.refreshToken.push({ refreshToken })
+            user.online = true;
             user.save((err, user) => {
                 if (err) {
                     res.statusCode = 500
@@ -81,18 +82,18 @@ userController.login = (req, res, next) => {
     )
 };
 
-userController.refreshToken = (req, res, next) => {
+autController.refreshToken = (req, res, next) => {
     const { signedCookies = {} } = req
     const { refreshToken } = signedCookies
-//console.log('refresh')
-//console.log(signedCookies)
-//console.log(refreshToken)
+    //console.log('refresh')
+    //console.log(signedCookies)
+    //console.log(refreshToken)
     if (refreshToken) {
         try {
             const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
             const userId = payload._id
             //console.log(userId)
-            User.findOne({ _id: userId }).then(
+            User.findOne({ _id: userId }).populate("societe").then(
                 user => {
                     if (user) {
                         // Find the refresh token against the user record in database
@@ -135,25 +136,52 @@ userController.refreshToken = (req, res, next) => {
     }
 }
 
-userController.me = (req, res, next) => {
-    res.send(req.user)
+autController.me = (req, res, next) => {
+    User.findById(req.user._id).populate("societe").then(
+        user => {
+            return res.status(200).json(user);
+            //res.send(req.user)
+        }
+    ).catch(error => console.log(error));
+
 }
 
-userController.getAllUsers = (req, res, next) => {
-    User.find({}, (err, result) => {
-        console.log(err);
-        console.log(result)
-        if (err) {
-            res.json(err);
-        } else {
-            res.json(result);
-        }
-    });
+autController.getAllUsers = (req, res, next) => {
+    User.find()
+        .populate("societe")
+        .then(p => console.log(p))
+        .catch(error => console.log(error));
+    /*User.
+        find().
+        populate('societe').
+        exec(function (err, allUsers) {
+            if (err) return handleError(err);
+            if (err) { return res.status(500).json({ error: err }); }
+            if (!allUsers) { return res.sendStatus(404); }
+            console.log(allUsers)
+            return res.status(200).json(allUsers);
+            //return res.status(200).json(user);
+            // console.log('The author is %s', story.author.name);
+            // prints "The author is Ian Fleming"
+        });*/
+    /* User.find({}, (err, allUsers) => {
+         console.log(err);
+         console.log(result)
+         if (err) {
+             res.json(err);
+         } else {
+             res.json(result);
+         }
+         if (err) { return res.status(500).json({ error: err }); }
+         if (!allUsers) { return res.sendStatus(404); }
+         return res.status(200).json(allUsers);
+     })*/
+    //.populate("category", "name -_id");
 }
 
 // Post registration
 
-userController.error = function (req, res) {
+autController.error = function (req, res) {
     console.log('ERROR')
     res.send('ERROR');
 };
@@ -161,7 +189,7 @@ userController.error = function (req, res) {
 
 
 // logout
-userController.logout = (req, res, next) => {
+autController.logout = (req, res, next) => {
     const { signedCookies = {} } = req
     const { refreshToken } = signedCookies
     console.log('logout');
@@ -169,7 +197,7 @@ userController.logout = (req, res, next) => {
     User.findById(req.user._id).then(
         user => {
             console.log('logout')
-           // console.log(user)
+            // console.log(user)
             const tokenIndex = user.refreshToken.findIndex(
                 item => item.refreshToken === refreshToken
             )
@@ -177,7 +205,7 @@ userController.logout = (req, res, next) => {
             if (tokenIndex !== -1) {
                 user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
             }
-
+            user.online = false
             user.save((err, user) => {
                 if (err) {
                     res.statusCode = 500
@@ -192,4 +220,4 @@ userController.logout = (req, res, next) => {
     )
 }
 
-module.exports = userController;
+module.exports = autController;

@@ -83,7 +83,7 @@ const App = () => {
         <div className="grids auth-screens h-screen flex md:w-full w-screen align-items-center lg:align-items-center justify-content-center surface-ground">
             <div className='h-screen w-screen absolute z-0 bg-cover bg-no-repeat' style={{ backgroundImage: 'url("./images/pages/login.png")', backgroundSize: '110%', filter: 'blur(20px)' }} />
             {<div className='h-screen w-screen absolute z-0' style={{ backgroundColor: 'rgba(0,0,0,0.8)' }} />}
-            <div className="col-10 lg:col-2 z-1 absolute">
+            <div className="col-10 md:col-8 lg:col-6 xl:col-4 z-1 absolute">
                 <TabView activeIndex={currentTab} onTabChange={(e) => setCurrentTab(e.index)} className="p-0" style={{backgroundColor: 'transparent'}}>
                     <TabPanel header="Connexion" className="p-0">
                         <LoginScreen />

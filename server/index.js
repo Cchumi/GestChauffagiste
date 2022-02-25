@@ -1,5 +1,7 @@
 const express = require("express")
 const cors = require("cors")
+const http = require("http");
+const socketIo = require("socket.io");
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const passport = require("passport")
@@ -32,14 +34,14 @@ if (process.env.NODE_ENV === "production") {
         response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
     });
 }
-
+app.use(express.static(__dirname + '/public'));
 
 //Add the client URL to the CORS policy
 
 const whitelist = process.env.WHITELISTED_DOMAINS
     ? process.env.WHITELISTED_DOMAINS.split(",")
     : []
-
+console.log(whitelist)
 const corsOptions = {
     origin: function (origin, callback) {
         if (!origin || whitelist.indexOf(origin) !== -1) {
@@ -48,16 +50,27 @@ const corsOptions = {
             callback(new Error("Not allowed by CORS"))
         }
     },
-
+    //origin: true,
     credentials: true,
 }
 
 app.use(cors(corsOptions))
+const server = http.createServer(app);
 
+global.io = socketIo(server); // < Interesting!
+require("./utils/listeners")
 app.use(passport.initialize())
 
 app.use("/users", userRouter)
 app.use("/clients", clientRouter)
+
+io.of("/api/socket").on("connection", (socket) => {
+    console.log("socket.io: User connected: ", socket.id);
+  
+    socket.on("disconnect", () => {
+      console.log("socket.io: User disconnected: ", socket.id);
+    });
+  });
 /*app.get("/getUsers", (req, res) => {
     User.find({}, (err, result) => {
         if (err) {
@@ -81,7 +94,12 @@ app.get("/", function (req, res) {
 
 //Start the server in port 8081
 
-const server = app.listen(process.env.PORT || 8081, function () {
+/*const server = app.listen(process.env.PORT || 8081, function () {
+    const port = server.address().port
+
+    console.log("App started at port:", port)
+})*/
+server.listen(process.env.PORT || 8081, function () {
     const port = server.address().port
 
     console.log("App started at port:", port)

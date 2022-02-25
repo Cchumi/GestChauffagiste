@@ -1,0 +1,196 @@
+import React, { useState, useEffect, useRef } from 'react';
+
+import { Redirect, useHistory } from 'react-router-dom'
+import { classNames } from 'primereact/utils';
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { InputText } from 'primereact/inputtext';
+
+import { Rating } from 'primereact/rating';
+import { SplitButton } from 'primereact/splitbutton';
+import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
+import { SelectButton } from 'primereact/selectbutton';
+import { Button } from 'primereact/button';
+import { ProductService } from '../../service/ProductService';
+export const UsersListTable = ({ currentUser, users, addItem, deleteItem }) => {
+    const [products, setProducts] = useState([]);
+    const productService = new ProductService();
+    const history = useHistory();
+    let emptyItem = {
+        _id: null,
+        firstName: '',
+        lastName: '',
+        userName: '',
+        email: '',
+        password: '',
+        role: 'user',
+        confirmPassword: '',
+        societe: currentUser.societe._id
+    };
+    const selectButtonRoles = [
+        { name: 'Administrateur', code: 'admin' },
+        { name: 'Utilisateur', code: 'user' },
+        { name: 'Client', code: 'client' },
+    ];
+    //console.log(emptyItem)
+    const [customers1, setCustomers1] = useState(null);
+    const [items, setItems] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [addDialog, setAddDialog] = useState(false);
+    const [editDialog, setEditDialog] = useState(false);
+    const [item, setItem] = useState(emptyItem);
+    const [submitted, setSubmitted] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState(false);
+    const [roleOption, setRoleOption] = useState(selectButtonRoles[1])
+    const toast = useRef(null);
+   // console.log(selectButtonRoles[1])
+    // const [filters1, setFilters1] = useState(null);
+    const [filters2, setFilters2] = useState({
+        'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
+        'userName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'country.name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'representative': { value: null, matchMode: FilterMatchMode.IN },
+        'status': { value: null, matchMode: FilterMatchMode.EQUALS },
+        'verified': { value: null, matchMode: FilterMatchMode.EQUALS },
+        '': { value: null, matchMode: FilterMatchMode.EQUALS },
+    });
+    //const [globalFilterValue1, setGlobalFilterValue1] = useState('');
+    const [globalFilterValue2, setGlobalFilterValue2] = useState('');
+    //const [loading1, setLoading1] = useState(true);
+    const [loadingUsers, setLoadingUsers] = useState(true);
+    useEffect(() => {
+        productService.getProductsSmall().then(data => setProducts(data));
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        //console.log(users)
+        // customerService.getCustomersLarge().then(data => { setCustomers1(getCustomers(data)); setLoading1(false) });
+        //customerService.getCustomersLarge().then(data => { setItems(getCustomers(data)); setLoadingClients(false) });
+        setItems(users);
+        setLoadingUsers(false);
+        // initFilters1();
+    }, [users]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        setItem({...item, role: roleOption.code})
+    }, [roleOption]);
+    const statusTemplate = (rowData) => {
+        return <span className={`product-badge status-${(rowData.inventoryStatus ? rowData.inventoryStatus.toLowerCase() : '')}`}>{rowData.inventoryStatus}</span>;
+    }
+    const editItem = (item) => {
+
+        setItem({ ...item });
+        setEditDialog(true);
+    }
+
+    const confirmDeleteItem = (item) => {
+        setItem(item);
+        setDeleteDialog(true);
+    }
+    const ratingTemplate = (rowData) => {
+        return <Rating value={rowData.rating} readOnly cancel={false} />
+    }
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <React.Fragment>
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editItem(rowData)} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => confirmDeleteItem(rowData)} />
+            </React.Fragment>
+        );
+    }
+    const verifiedRowFilterTemplate = (options) => {
+        return null
+    }
+    const openNew = () => {
+        setItem(emptyItem);
+        //setRoleOption(selectButtonRoles.filter(x => x.code === emptyItem.role));
+        console.log(roleOption)
+        setSubmitted(false);
+        setAddDialog(true);
+    }
+    const hideDialog = () => {
+        setSubmitted(false);
+        setAddDialog(false);
+        setEditDialog(false);
+    }
+    const onGlobalFilterChange2 = (e) => {
+        const value = e.target.value;
+        let _filters2 = { ...filters2 };
+        _filters2['global'].value = value;
+
+        setFilters2(_filters2);
+        setGlobalFilterValue2(value);
+    }
+
+    const clearFilter2 = () => {
+        setFilters2({
+            'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
+            'userName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+            'firstName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+            'lastName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+            /* 'country.name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+             'representative': { value: null, matchMode: FilterMatchMode.IN },
+             'status': { value: null, matchMode: FilterMatchMode.EQUALS },
+             'verified': { value: null, matchMode: FilterMatchMode.EQUALS }*/
+        });
+        setGlobalFilterValue2('');
+    }
+
+    const renderHeader = () => {
+        return (
+            <div className="flex justify-content-between p-ai-center filter-field" >
+                <div>
+                    <span className="p-input-icon-left">
+                        <i className="pi pi-search" />
+                        <InputText value={globalFilterValue2} onChange={onGlobalFilterChange2} placeholder="Recherche" />
+                    </span>
+                    <Button type="button" icon="pi pi-filter-slash" label="Effacer" className="p-button-outlined" onClick={clearFilter2} />
+                </div>
+                <div>
+                    <Button type="button" icon="pi pi-plus-circle" label="Nouvel Utilisateur" className="p-button-outlined" onClick={openNew} />
+                </div>
+
+            </div>
+        )
+    }
+
+    const paginatorLeft = <Button type="button" icon="pi pi-refresh" className="p-button-text" />;
+    const paginatorRight = <Button type="button" icon="pi pi-cloud" className="p-button-text" />;
+    const header = renderHeader();
+
+    return (
+        <div>
+            <div className="card">
+                <DataTable value={users} header="Stack"  header={header} responsiveLayout="stack" breakpoint="960px"
+                paginator 
+                //className="p-datatable p-datatable-customers" //rows={100}
+                //scrollable
+                //reflow="true"
+                scrollHeight="flex"
+                paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                currentPageReportTemplate="Afficher {first} sur {last} de {totalRecords}" rows={50} rowsPerPageOptions={[10, 20, 50]}
+                paginatorLeft={paginatorLeft}
+                paginatorRight={paginatorRight}
+                dataKey="_id"
+                filters={filters2}
+                        filterDisplay="menu"
+                        loading={loadingUsers}
+                >
+                <Column field="_id" hidden />
+                        <Column field="userName" header="Utilisateur" filter filterPlaceholder="Recherche par utilisateur" sortable  />
+                        <Column field="role" header="Role" filter filterPlaceholder="Recherche par Role" sortable  />
+                        <Column field="firstName" header="Prénom" filter filterPlaceholder="Recherche par prénom" sortable  />
+                        <Column field="lastName" header="Nom" filter filterPlaceholder="Recherche par nom" sortable  />
+                        {/* <Column header="Country" filterField="country.name" sortable style={{ justifyContent: 'space-between' }} body={countryBodyTemplate} filter filterPlaceholder="Recherche par pays" />
+                    <Column header="Agent" filterField="representative" sortable showFilterMenu={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body={representativeBodyTemplate}
+                        filter filterElement={representativeRowFilterTemplate} />
+                    <Column field="status" header="Status" sortable showFilterMenu={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusRowFilterTemplate} />
+                    <Column field="verified" header="Verified" sortable dataType="boolean" style={{ minWidth: '6rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedRowFilterTemplate} />*/}
+                        <Column header="Action"   body={actionBodyTemplate}  />
+                   
+                </DataTable>
+            </div>
+        </div>
+    );
+}

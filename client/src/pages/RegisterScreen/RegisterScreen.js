@@ -17,7 +17,7 @@ export default function RegisterScreen({ setLoggedInState, setState }) {
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [username, setUsername] = useState("")
+  const [userName, setUserName] = useState("")
   const [userContext, setUserContext] = useContext(UserContext)
 
   const formSubmitHandler = (e) => {
@@ -31,7 +31,7 @@ export default function RegisterScreen({ setLoggedInState, setState }) {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstName, lastName, username, email, password }),
+      body: JSON.stringify({ firstName, lastName, userName, email, password }),
     })
       .then(async response => {
         setIsSubmitting(false)
@@ -80,7 +80,7 @@ export default function RegisterScreen({ setLoggedInState, setState }) {
           </div>
         </div>
         <div className="p-field ">
-          <InputText className="login-form-input" id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="nom utilisateur" />
+          <InputText className="login-form-input" id="userName" type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="nom utilisateur" />
         </div>
         <div className="login-form-between-padding"></div>
         <div className="login-form-between-padding"></div>

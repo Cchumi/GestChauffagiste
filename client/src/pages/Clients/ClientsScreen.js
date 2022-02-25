@@ -14,6 +14,7 @@ import { ClientsListTable } from '../../components/Clients/ClientsListTable'
 import { ClientsLayout } from '../../components/Clients/ClientsLayout';
 
 const ClientsScreen = () => {
+  const history = useHistory();
   const [userContext, setUserContext] = useContext(UserContext)
   const [listOfClients, setListOfClients] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -74,7 +75,7 @@ const ClientsScreen = () => {
       {/*<h2 className="mt-0 mb-3 text-5xl text-900 text-center p-4 text-white">Mes Clients</h2>*/}
       <div className="grid">
         <div className="col-12 md:col-12">
-          <ClientsListTable clientsData={listOfClients} addClient={addClient} />
+          <ClientsListTable clientsData={listOfClients} addClient={addClient} history={history} />
         </div>
       </div>
 
