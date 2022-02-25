@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === "production") {
         response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
     });
 }
-app.use(express.static(__dirname + '/public'));
+//app.use(express.static(__dirname + '/public'));
 
 //Add the client URL to the CORS policy
 
