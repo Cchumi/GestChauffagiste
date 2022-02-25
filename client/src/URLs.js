@@ -3,7 +3,7 @@ let URLs = {};
 if (process.env.NODE_ENV === "production") {
   URLs = {
     baseURL: "/api",
-    socketURL: "https://thoughtwall.herokuapp.com/api",
+    socketURL: "https://gestbouhet.herokuapp.com/api",
   };
 } else {
   URLs = {
