@@ -55,6 +55,12 @@ const Client = new Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Materiel"
     }
+  ],
+  interventions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Intervention"
+    }
   ]
 },
   {

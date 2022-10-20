@@ -20,7 +20,20 @@ const Materiel = new Schema({
     type: String,
     default: "",
   },
-})
+  client:
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Client"
+  },
+  user:
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
+},
+  {
+    timestamps: true
+  })
 const MaterielExport = mongoose.model("Materiel", Materiel)
 
 module.exports = MaterielExport

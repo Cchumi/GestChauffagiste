@@ -46,6 +46,7 @@ import ClientsScreen from './pages/Clients/ClientsScreen';
 import ClientsDetailsScreen from './pages/Clients/ClientsDetailsScreen'
 import UsersScreen from './pages/Users/UsersScreen';
 import LoginScreen from './pages/LoginScreen/LoginScreen';
+import InterventionsScreen from './pages/Interventions/InterventionsScreen'
 
 import RegisterScreen from './pages/RegisterScreen/RegisterScreen';
 import { ProfileScreen } from './pages/ProfileScreen/ProfileScreen'
@@ -55,18 +56,19 @@ import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
 import axios from "axios";
 import { UserContext } from "./context/UserContext"
+import { ThemeContext } from "./context/themeContext"
 import Loader from "./components/Loader"
 
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import 'prismjs/themes/prism-coy.css';
+//import 'prismjs/themes/prism-coy.css';
 import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
 import URLs from "./URLs";
-const ENDPOINT = "http://127.0.0.1:3000";
+
 //Amplify.configure(awsconfig);
 const HomeScreen = () => {
     const history = useHistory();
@@ -85,12 +87,27 @@ const HomeScreen = () => {
     const [state, setState] = useState({})
     PrimeReact.ripple = true;
 
-    const [userContext, setUserContext] = useContext(UserContext)
+    const [userContext, setUserContext] = useContext(UserContext);
+    //const [themeContext, setThemeContext] = useContext(ThemeContext)
+    const { dark, toggle } = useContext(ThemeContext);
 
     let menuClick = false;
     let mobileTopbarMenuClick = false;
     const [response, setResponse] = useState("");
-
+    console.log(userContext)
+   /* useEffect(() => {
+        if (userContext.details) {
+            if (userContext.details.societe.config.interface) {
+                setLayoutMode(userContext.details.societe.config.interface.layoutMode)
+                setLayoutColorMode(userContext.details.societe.config.interface.layoutColorMode)
+                //setTheme(userContext.details.societe.config.interface.theme)
+            }
+            else {
+                //setTheme('lara-light-indigo')
+            }
+        }
+    }, [userContext])*/
+    //toggle();
     useEffect(() => {
         console.log("useeffect io")
         const socket = io(`${URLs.socketURL}/socket`);
@@ -119,7 +136,7 @@ const HomeScreen = () => {
         // CLEAN UP THE EFFECT
         // return () => socket.disconnect();
     }, []);
-    console.log(response)
+   
     useEffect(() => {
         if (mobileMenuActive) {
             addClass(document.body, "body-overflow-hidden");
@@ -241,22 +258,28 @@ const HomeScreen = () => {
             label: 'Clients',
             items: [
                 { label: 'Liste Clients', icon: 'pi pi-fw pi-fw pi-list', to: '/clients' },
-                { label: 'Devis Clients', icon: 'pi pi-fw pi-id-card', to: '/clients' },
-                { label: 'Factures Clients', icon: 'pi pi-fw pi-id-card', to: '/clients' },
+                { label: 'Devis Clients', icon: 'pi pi-fw pi-id-card', to: '/devis-clients' },
+                { label: 'Factures Clients', icon: 'pi pi-fw pi-id-card', to: '/factures-clients' },
             ]
         },
         {
             label: 'Fournisseurs',
             items: [
-                { label: 'Liste Fournisseurs', icon: 'pi pi-fw pi-fw pi-list', to: '/clients' },
-                { label: 'Commandes Fournisseurs', icon: 'pi pi-fw pi-id-card', to: '/clients' },
-                { label: 'Factures Fournisseurs', icon: 'pi pi-fw pi-id-card', to: '/clients' },
+                { label: 'Liste Fournisseurs', icon: 'pi pi-fw pi-fw pi-list', to: '/fournisseurs' },
+                { label: 'Commandes Fournisseurs', icon: 'pi pi-fw pi-id-card', to: '/commandes-fournisseurs' },
+                { label: 'Factures Fournisseurs', icon: 'pi pi-fw pi-id-card', to: '/factures-fournisseurs' },
             ]
         },
         {
             label: 'Matériels',
             items: [
                 { label: 'Liste Matériels', icon: 'pi pi-fw pi-fw pi-list', to: '/materiels' },
+            ]
+        },
+        {
+            label: 'Société', icon: 'pi pi-fw pi-sitemap', role: 'super-admin',
+            items: [
+                { label: 'Liste Société', icon: 'pi pi-fw pi-id-card', to: '/societes' },
             ]
         },
         {
@@ -486,6 +509,8 @@ const HomeScreen = () => {
                         <Route path="/profile" component={ProfileScreen} />
                         <Route path="/settings" component={SettingsScreen} />
 
+                        <Route path="/interventions" component={InterventionsScreen} />
+
                         <Route path="/formlayout" component={FormLayoutDemo} />
                         <Route path="/input" component={InputDemo} />
                         <Route path="/floatlabel" component={FloatLabelDemo} />
@@ -514,8 +539,8 @@ const HomeScreen = () => {
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>
 
-            <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
-                layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
+            {/*<AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange}
+                layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />*/}
 
             <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
                 <div className="layout-mask p-component-overlay"></div>

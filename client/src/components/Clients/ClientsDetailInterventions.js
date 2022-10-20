@@ -25,9 +25,9 @@ import { Toast } from 'primereact/toast';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { GMap } from 'primereact/gmap';
 
-//import './css/ClientsListTable.css';
+//import './css/ClientsDetailInterventions.css';
 
-export const ClientsListTable = ({ clientsData, addClient, history }) => {
+export const ClientsDetailInterventions = ({ clientsData }) => {
     //console.log(users)
     //const history = useHistory();
     let emptyClient = {
@@ -99,12 +99,12 @@ export const ClientsListTable = ({ clientsData, addClient, history }) => {
     const getClientData = () => {
         //getuserbyid
         console.log(selectedClient)
-        history.push(`/clients/${selectedClient._id}`)
-        /* return (
-             <Redirect
-                 to={`/clients/${selectedClient._id}`}
-             />
-         );*/
+       // history.push(`/clients/${selectedClient._id}`)
+       /* return (
+            <Redirect
+                to={`/clients/${selectedClient._id}`}
+            />
+        );*/
     }
 
     const openNew = () => {
@@ -169,13 +169,11 @@ export const ClientsListTable = ({ clientsData, addClient, history }) => {
         return (
             <div className="flex justify-content-between p-ai-center filter-field lg:flex-row flex-column" >
                 <div>
-                    <div className="p-inputgroup">
-                        <span className="p-inputgroup-addon">
-                            <i className="pi pi-search" />
-                        </span>
+                    <span className="p-input-icon-left">
+                        <i className="pi pi-search" />
                         <InputText value={globalFilterValue2} onChange={onGlobalFilterChange2} placeholder="Recherche" />
-                        <Button type="button" icon="pi pi-filter-slash" label="Effacer" className="p-button-outlined" onClick={clearFilter2} />
-                    </div>
+                    </span>
+                    <Button type="button" icon="pi pi-filter-slash" label="Effacer" className="p-button-outlined" onClick={clearFilter2} />
                 </div>
                 <div>
                     <Button type="button" icon="pi pi-plus-circle" label="Nouveau Client" className="p-button-outlined" onClick={openNew} />
@@ -250,7 +248,7 @@ export const ClientsListTable = ({ clientsData, addClient, history }) => {
                 _clients.push(_client);
                 toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
             }
-            addClient(_client)
+            //addClient(_client)
             setClients(_clients);
             setClientDialog(false);
             setClient(emptyClient);
@@ -400,7 +398,7 @@ export const ClientsListTable = ({ clientsData, addClient, history }) => {
                         currentPageReportTemplate="Afficher {first} sur {last} de {totalRecords}" rows={50} rowsPerPageOptions={[10, 20, 50]}
                         paginatorLeft={paginatorLeft}
                         paginatorRight={paginatorRight}
-                        //dataKey="id"
+                       //dataKey="id"
                         filters={filters2}
                         filterDisplay="row"
                         loading={loadingClients}

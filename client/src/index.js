@@ -7,12 +7,15 @@ import { HashRouter, BrowserRouter, Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import ScrollToTop from './ScrollToTop';
 import { UserProvider } from "./context/UserContext"
+import { ThemeProvider } from "./context/themeContext";
 const history = createBrowserHistory(/*{forceRefresh:true}*/);
 ReactDOM.render(
     <Router history={history} /*forceRefresh={true}*/ /*basename="/calendar"*/>
         <ScrollToTop>
             <UserProvider>
-                <App />
+                <ThemeProvider>
+                    <App />
+                </ThemeProvider>
             </UserProvider>
         </ScrollToTop>
     </Router>,

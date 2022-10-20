@@ -43,6 +43,7 @@ export const UsersListTable = ({ currentUser, users, addItem, deleteItem, _onRef
         societe: currentUser.societe._id
     };
     const selectButtonRoles = [
+        { name: 'Super Administrateur', code: 'super-admin' },
         { name: 'Administrateur', code: 'admin' },
         { name: 'Utilisateur', code: 'user' },
         { name: 'Client', code: 'client' },
@@ -118,12 +119,18 @@ export const UsersListTable = ({ currentUser, users, addItem, deleteItem, _onRef
         });
     }
 
-    const getItemData = () => {
+    const getItemData = (item) => {
+        console.log(item)
+        setSelectedItem(item)
         //getuserbyid
-        console.log(selectedItem)
-        setItem(selectedItem);
-        setSubmitted(false);
-        setAddDialog(true);
+       // setTimeout(() => {
+            setItem(item);
+            setRoleOption(selectButtonRoles.find(e => e.code === item.role));
+            setSubmitted(false);
+            setAddDialog(true);
+         // }, 500);
+        
+
         // history.push(`/settings/utilisateurs/${selectedItem._id}`)
         //setAddDialog(true)
     }
@@ -348,9 +355,11 @@ export const UsersListTable = ({ currentUser, users, addItem, deleteItem, _onRef
         setItem(_item);
     }
     const editItem = (item) => {
-
-        setItem({ ...item });
-        setEditDialog(true);
+        console.log(item);
+        console.log(roleOption);
+       /* setItem({ ...item });
+        setEditDialog(true);*/
+        getItemData();
     }
 
     const confirmDeleteItem = (item) => {
@@ -376,7 +385,12 @@ export const UsersListTable = ({ currentUser, users, addItem, deleteItem, _onRef
     const actionBodyTemplate = (rowData) => {
         return (
             <div className='justify-content-between'>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editItem(rowData)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => {
+                    console.log(rowData);
+                    //setSelectedItem(rowData);
+                    getItemData(rowData);
+                    //editItem(rowData)
+                    }} />
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => confirmDeleteItem(rowData)} />
             </div>
         );
@@ -452,11 +466,11 @@ export const UsersListTable = ({ currentUser, users, addItem, deleteItem, _onRef
                         emptyMessage="No customers found."
                         column="test"
                         //onRowClick={()=> {alert('ok')}}
-                        onRowDoubleClick={() => { getItemData() }}
+                        onRowDoubleClick={(e) => { console.log(e.data); getItemData(e.data) }}
                         rowHover
                         showGridlines
                         showAddButton
-                        selectionMode="single" selection={selectedItem} onSelectionChange={e => setSelectedItem(e.value)}
+                        selectionMode="single" selection={selectedItem} onSelectionChange={e => {console.log(e.value);setSelectedItem(e.value)}}
                         dataKey="_id"
                     >
                         <Column field="_id" hidden />

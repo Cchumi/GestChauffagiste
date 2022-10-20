@@ -62,11 +62,12 @@ export const SettingsScreen = () => {
             <div className="col-12 md:col-12">
               <div className="card card-w-title">
                 <TabMenu model={wizardItems} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />
-                <Route exact path={'/settings'} component={SettingsMain} />
-                <Route path={'/settings/societe'} component={SettingsSociete} />
-                <Route path={'/settings/utilisateurs'} component={SettingsUtilisateurs} />
-                <Route path={'/settings/interface'} component={SettingsInterface} />
-                <Route path={'/settings/models'} component={SettingsModels} />
+                <Route path="/settings" exact render={() => <SettingsMain userContext={userContext} />} />
+                <Route path="/settings/societe" exact render={() => <SettingsSociete colorMode={userContext} />} />
+                <Route path="/settings/utilisateurs" exact render={() => <SettingsUtilisateurs userContext={userContext} />} />
+                <Route path="/settings/interface" exact render={() => <SettingsInterface userContext={userContext} />} />
+                <Route path="/settings/models" exact render={() => <SettingsModels userContext={userContext} />} />
+
               </div>
             </div>
           }

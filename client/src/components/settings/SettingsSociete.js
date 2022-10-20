@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef} from 'react';
 import { UserContext } from '../../context/UserContext';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Toolbar } from 'primereact/toolbar';
+import { FileUpload } from 'primereact/fileupload';
 export const SettingsSociete = () => {
     const [userContext, setUserContext] = useContext(UserContext);
     //console.log(userContext)
@@ -13,6 +14,19 @@ export const SettingsSociete = () => {
     const [newSocieteValues, setNewSocieteValues] = useState(societe)
     const [inputGroupValue, setInputGroupValue] = useState(null)
     const [disabled, setDisabled] = useState(true)
+    const toast = useRef(null);
+    const baptismFileUploadRef = useRef(null);
+    const onUpload = () => {
+        toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
+    }
+    const getFiles = (event) => {
+        console.log(event)
+        console.log(event.files)
+    }
+
+    const chooseOptions = {label: 'Choisir'/*, icon: 'pi pi-fw pi-plus'*/};
+const uploadOptions = { icon: 'pi pi-upload', className: 'p-button-success'};
+const cancelOptions = {label: 'Annuler', icon: 'pi pi-times', className: 'p-button-danger'};
     /* useEffect=(()=> {
  
      }, [userContext])*/
@@ -49,7 +63,19 @@ export const SettingsSociete = () => {
         saveSociete();
         setDisabled(!disabled)
     }
-    console.log(newSocieteValues)
+    const onBaptismCertificateUploadAuto = ({ files, options }) => {
+        const [file] = files;
+        console.log(files)
+        console.log(options)
+        //dispatch(uploadParishionerBaptismCertificate(parishioner.id, file));
+        //baptismFileUploadRef.current.clear();
+        baptismFileUploadRef.current.clear();
+      };
+    const leftContents = (
+        <React.Fragment>
+            <h5>Détails Société : <span style={{fontWeight: '800'}}>{societe.societeName}</span></h5>
+        </React.Fragment>
+    );
     const rightContents = (
         <React.Fragment>
             {disabled &&
@@ -70,9 +96,9 @@ export const SettingsSociete = () => {
             <div className="col-12">
 
                 <div className="cards">
-                    <h5>Votre Société</h5>
-                    {userContext.details.role === "admin" &&
-                        <Toolbar right={rightContents} />
+                    
+                    {(userContext.details.role === "super-admin" || userContext.details.role === "societe-admin") &&
+                        <Toolbar left={leftContents} right={rightContents} style={{background: 'none'}} />
                     }
                     <div className="grid p-fluid">
 
@@ -84,11 +110,11 @@ export const SettingsSociete = () => {
                                 </div>
                                 <div className="field  col-12 md:col-6">
                                     <label htmlFor="directorFirstName">Prénom Dirigeant</label>
-                                    <InputText id="directorFirstName" type="text" placeholder="Prénom Dirigeant" disabled={disabled} value={newSocieteValues.directorFirstName || ''} onChange={(e) => setNewSocieteValues({ ...newSocieteValues, directorFirstName: e.currentTarget.value })} />
+                                    <InputText id="directorFirstName" type="text" placeholder="Prénom Dirigeant" disabled={disabled} value={newSocieteValues.directorFirstName || ''} onChange={(e) => setNewSocieteValues({ ...newSocieteValues, directorFirstName: e.currentTarget.value.charAt(0).toUpperCase() + e.currentTarget.value.slice(1) })} />
                                 </div>
                                 <div className="field col-12 md:col-6">
                                     <label htmlFor="directorFirstName">Nom Dirigeant</label>
-                                    <InputText id="directorFirstName" type="text" placeholder="Nom Dirigeant" disabled={disabled} value={newSocieteValues.directorFirstName || ''} onChange={(e) => setNewSocieteValues({ ...newSocieteValues, directorFirstName: e.currentTarget.value })} />
+                                    <InputText id="directorFirstName" type="text" placeholder="Nom Dirigeant" disabled={disabled} value={newSocieteValues.directorLastName || ''} onChange={(e) => setNewSocieteValues({ ...newSocieteValues, directorLastName: e.currentTarget.value.charAt(0).toUpperCase() + e.currentTarget.value.slice(1) })} />
                                 </div>
                                 <div className="field col-12 md:col-6">
                                     <label htmlFor="email">E-Mail</label>
@@ -107,13 +133,24 @@ export const SettingsSociete = () => {
                                     <label htmlFor="address2">Complément d'adresse</label>
                                     <InputText id="address2" type="text" placeholder="Complément d'adresse" disabled={disabled} value={newSocieteValues.address2 || ''} onChange={(e) => setNewSocieteValues({ ...newSocieteValues, address2: e.currentTarget.value })} />
                                 </div>
-                                <div className="field  col-12 md:col-6">
+                                <div className="field  col-12 md:col-2">
                                     <label htmlFor="code_postal">Code Postal</label>
                                     <InputText id="code_postal" type="text" placeholder="Code Postal" disabled={disabled} value={newSocieteValues.code_postal || ''} onChange={(e) => setNewSocieteValues({ ...newSocieteValues, code_postal: e.currentTarget.value })} />
                                 </div>
-                                <div className="field  col-12 md:col-6">
+                                <div className="field  col-12 md:col-4">
                                     <label htmlFor="city">Ville</label>
                                     <InputText id="city" type="text" placeholder="Ville" disabled={disabled} value={newSocieteValues.city || ''} onChange={(e) => setNewSocieteValues({ ...newSocieteValues, city: e.currentTarget.value })} />
+                                </div>
+                                <div className="field  col-12 md:col-6">
+                                <label htmlFor="logo">Logo</label>
+                                {disabled}
+                                <FileUpload id="logo" mode="basic"  disabled={disabled}  name="demo[]" url="./upload.php" accept="image/*" maxFileSize={1000000} onUpload={onUpload} /*chooseOptions={chooseOptions}*/ chooseLabel="Choisir" onSelect={(event)=>getFiles(event)} 
+                                uploadOptions={uploadOptions}
+                                customUpload
+                                uploadHandler={onBaptismCertificateUploadAuto}
+                                ref={baptismFileUploadRef}
+                                />      
+                                    {/*<FileUpload id="logo" name="demo[]" url="./upload.php" onUpload={onUpload} multiple accept="image/*" maxFileSize={1000000}  chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />*/}
                                 </div>
                             </div>
                         </div>

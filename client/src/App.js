@@ -12,10 +12,10 @@ import { TabView, TabPanel } from 'primereact/tabview';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import 'prismjs/themes/prism-coy.css';
-import './assets/demo/flags/flags.css';
-import './assets/demo/Demos.scss';
-import './assets/layout/layout.scss';
+//import 'prismjs/themes/prism-coy.css';
+//import './assets/demo/flags/flags.css';
+//import './assets/demo/Demos.scss';
+//import './assets/layout/layout.scss';
 import './App.scss';
 //import { myContext } from './context/Context';
 import { UserContext } from './context/UserContext';
@@ -74,7 +74,7 @@ const App = () => {
             </div>
         )
     }*/
-    console.log(userContext)
+
     return userContext.token === null ? (
         <div className="grids auth-screens h-screen flex md:w-full w-screen align-items-center lg:align-items-center justify-content-center surface-ground">
             <div className='h-screen w-screen absolute z-0 bg-cover bg-no-repeat' style={{ backgroundImage: 'url("./images/pages/login.png")', backgroundSize: '110%', filter: 'blur(20px)' }} />

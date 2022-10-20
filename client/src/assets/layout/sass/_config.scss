@@ -1,5 +1,5 @@
 .layout-config {
-    position: fixed;
+    /*position: fixed;
     top: 0;
     padding: 0;
     right: 0;
@@ -13,7 +13,7 @@
     color: var(--text-color);
     background-color: var(--surface-overlay);
     border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
+    border-bottom-left-radius: 12px;*/
 
     &.layout-config-active {
         transform: translateX(0);

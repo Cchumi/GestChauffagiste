@@ -8,3 +8,12 @@
         padding: 0 !important;
     }
 }
+
+.p-datatable {
+    border-radius: 12px;
+     box-shadow: 0px 3px 5px rgb(0 0 0 / 2%), 0px 0px 2px rgb(0 0 0 / 5%), 0px 1px 4px rgb(0 0 0 / 8%) !important;
+     .p-datatable-header {
+        background: transparent;
+        border: 0;
+     }
+}
