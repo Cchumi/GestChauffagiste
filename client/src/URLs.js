@@ -2,13 +2,13 @@ let URLs = {};
 
 if (process.env.NODE_ENV === "production") {
   URLs = {
-    baseURL: "/api",
-    socketURL: "https://gestbouhet.herokuapp.com/api",
+    baseURL: "/gestapi",
+    socketURL: "https://prod.pierregagliardi.com/gestapi",
   };
 } else {
   URLs = {
-    baseURL: "http://localhost:3000/api",
-    socketURL: "http://localhost:3000/api",
+    baseURL: "http://localhost:3000/gestapi",
+    socketURL: "http://localhost:3000/gestapi",
   };
 }
 

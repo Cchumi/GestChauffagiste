@@ -30,7 +30,7 @@ const App = () => {
 
     const verifyUser = useCallback(() => {
 
-        fetch("users/refreshToken", {
+        fetch("/gestapi/users/refreshToken", {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },

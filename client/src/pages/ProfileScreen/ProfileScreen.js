@@ -26,7 +26,7 @@ export const ProfileScreen = () => {
   const history = useHistory();
   const Logout = () => {
     //process.env.REACT_APP_API_ENDPOINT + 
-    fetch("/users/logout", {
+    fetch("/gestapi/users/logout", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const ProfileScreen = () => {
 
   const getMeInfo = () => {
     //process.env.REACT_APP_API_ENDPOINT + 
-    fetch("/users/me", {
+    fetch("/gestapi/users/me", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

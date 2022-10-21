@@ -78,7 +78,7 @@ const ClientsDetailsScreen = (props) => {
   };*/
   useEffect(() => {
     //process.env.REACT_APP_API_ENDPOINT + 
-    fetch("/clients/getclientbyid", {
+    fetch("/gestapi/clients/getclientbyid", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

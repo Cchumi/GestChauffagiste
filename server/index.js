@@ -61,8 +61,8 @@ global.io = socketIo(server); // < Interesting!
 require("./utils/listeners")
 app.use(passport.initialize())
 
-app.use("/users", userRouter)
-app.use("/clients", clientRouter)
+app.use("/gestapi/users", userRouter)
+app.use("/gestapi/clients", clientRouter)
 
 io.of("/api/socket").on("connection", (socket) => {
     console.log("socket.io: User connected: ", socket.id);

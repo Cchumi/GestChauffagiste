@@ -26,7 +26,7 @@ const LoginScreen = () => {
     const genericErrorMessage = "Something went wrong! Please try again later."
     //let data = null
     //fetch(process.env.REACT_APP_API_ENDPOINT + "users/login", {
-      fetch("/users/login", {
+      fetch("/gestapi/users/login", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

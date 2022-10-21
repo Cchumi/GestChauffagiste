@@ -10,7 +10,7 @@ import { UserProvider } from "./context/UserContext"
 import { ThemeProvider } from "./context/themeContext";
 const history = createBrowserHistory(/*{forceRefresh:true}*/);
 ReactDOM.render(
-    <Router history={history} /*forceRefresh={true}*/ /*basename="/calendar"*/>
+    <Router history={history} /*forceRefresh={true}*/ /*basename="/gest"*/>
         <ScrollToTop>
             <UserProvider>
                 <ThemeProvider>

@@ -155,7 +155,7 @@ export const AppMenu = (props) => {
             <AppSubmenu items={props.model} className="layout-menu" onMenuItemClick={props.onMenuItemClick} root={true} role="menu" />
             <a href="https://www.primefaces.org/primeblocks-react" className="block mt-3">
                 <img alt="primeblocks" className="w-full"
-                    src={props.layoutColorMode === 'light' ? 'assets/layout/images/banner-primeblocks.png' : 'assets/layout/images/banner-primeblocks-dark.png'} />
+                    src={props.layoutColorMode === 'light' ? `${process.env.PUBLIC_URL }/assets/layout/images/banner-primeblocks.png` : `${process.env.PUBLIC_URL }/assets/layout/images/banner-primeblocks-dark.png`} />
             </a>
         </div>
     );

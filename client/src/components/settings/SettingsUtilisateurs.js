@@ -13,7 +13,7 @@ export const SettingsUtilisateurs = () => {
     //var myVar = null;
     const verifyUsers = useCallback(() => {
         //process.env.REACT_APP_API_ENDPOINT + 
-        fetch("/users/getallusers", {
+        fetch("/gestapi/users/getallusers", {
             method: "GET",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ export const SettingsUtilisateurs = () => {
         console.log(newItem)
        //return;
        // fetch(process.env.REACT_APP_API_ENDPOINT + "clients/add", {
-        fetch("/users/adduser", {
+        fetch("/gestapi/users/adduser", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -66,7 +66,7 @@ export const SettingsUtilisateurs = () => {
         console.log("DELETE ITEM");
         console.log(item)
        // fetch(process.env.REACT_APP_API_ENDPOINT + "clients/add", {
-        fetch("/users/deleteuser", {
+        fetch("/gestapi/users/deleteuser", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

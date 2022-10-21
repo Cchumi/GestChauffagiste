@@ -133,7 +133,7 @@ export const AppTopbar = (props) => {
         <div className="layout-topbar">
             <Toast ref={toast}></Toast>
             <Link to="/" className="layout-topbar-logo">
-                <img src={props.layoutColorMode === 'light' ? 'assets/layout/images/logo-dark.svg' : 'assets/layout/images/logo-white.svg'} alt="logo" />
+                <img src={props.layoutColorMode === 'light' ? `${process.env.PUBLIC_URL }/assets/layout/images/logo-dark.svg`: `${process.env.PUBLIC_URL }/assets/layout/images/logo-white.svg`} alt="logo" />
                 <span>Gest'Bouhet</span>
             </Link>
 

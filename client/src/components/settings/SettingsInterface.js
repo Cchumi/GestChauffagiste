@@ -75,7 +75,7 @@ export const SettingsInterface = (props) => {
         console.log("SAVE SOCIETE");
         console.log(newSocieteValues)
         // fetch(process.env.REACT_APP_API_ENDPOINT + "clients/add", {
-        fetch("/users/updateSociete", {
+        fetch("/gestapi/users/updateSociete", {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },

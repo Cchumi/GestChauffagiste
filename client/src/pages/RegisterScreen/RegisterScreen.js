@@ -27,7 +27,7 @@ export default function RegisterScreen({ setLoggedInState, setState }) {
 
     const genericErrorMessage = "Something went wrong! Please try again later."
 //    fetch(process.env.REACT_APP_API_ENDPOINT + "users/signup", {
-    fetch("/users/signup", {
+    fetch("/gestapi/users/signup", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
